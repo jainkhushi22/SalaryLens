@@ -13,7 +13,7 @@ import numpy as np
 @st.cache_data
 def load_data():
     try:
-        return pd.read_csv("Cleaned_DS_Jobs.csv")
+        return pd.read_csv("Data/Cleaned_DS_Jobs.csv")
     except:
         return None
 
@@ -135,13 +135,9 @@ def train_models(model_data: pd.DataFrame):
 # Streamlit App
 # ----------------------------
 def main():
-    st.title("📊 SalaryLens – Explore, Compare, Predict")
+    st.title(" SalaryLens – Explore, Compare, Predict")
 
-    uploaded_file = st.file_uploader("Upload Cleaned_DS_Jobs.csv", type=["csv"])
-    if uploaded_file:
-        data = pd.read_csv(uploaded_file)
-    else:
-        data = load_data()
+    data = load_data()
 
     if data is None:
         st.warning("Please upload or place 'Cleaned_DS_Jobs.csv' in this folder.")
@@ -179,7 +175,7 @@ def main():
                           x="seniority_label", y="avg_salary", title="Salary vs Seniority")
             st.plotly_chart(fig2)
 
-    # ---------------- Skills Analysis ----------------
+    # -------- Skills Analysis ----------------
     elif page == "Skills Analysis":
         st.subheader("Skills Demand")
         skills = ["python", "excel", "hadoop", "spark", "aws", "tableau", "big_data"]
@@ -198,7 +194,7 @@ def main():
             fig2 = px.bar(pd.DataFrame(skill_salary), x="Skill", y="Average Salary", title="Salary by Skills")
             st.plotly_chart(fig2)
 
-    # ---------------- Company Analysis ----------------
+    # --------- Company Analysis ----------------
     elif page == "Company Analysis":
         st.subheader("Top Rated Companies")
         if "Rating" in df.columns:
@@ -216,7 +212,7 @@ def main():
             fig2 = px.pie(values=sector_counts.values, names=sector_counts.index, title="Top Sectors")
             st.plotly_chart(fig2)
 
-    # ---------------- Job Search ----------------
+    # -------Job Search ----------------
     elif page == "Job Search":
         st.subheader("Filter Jobs")
         sector = st.selectbox("Sector", ["All"] + sorted(df["Sector"].dropna().unique()))
